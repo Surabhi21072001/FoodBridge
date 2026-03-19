@@ -7,8 +7,10 @@ import { FoodBridgeAgent } from "../agent/agent";
 import { sessionManager } from "../agent/session/manager";
 import { v4 as uuidv4 } from "uuid";
 
-// Initialize agent
-const agent = new FoodBridgeAgent(sessionManager);
+// Initialize agent with dynamic API base URL (supports Heroku's dynamic PORT)
+const port = process.env.PORT || 3000;
+const apiBaseUrl = process.env.API_BASE_URL || `http://localhost:${port}/api`;
+const agent = new FoodBridgeAgent(sessionManager, apiBaseUrl);
 
 export const chat = async (req: Request, res: Response): Promise<void> => {
   try {
