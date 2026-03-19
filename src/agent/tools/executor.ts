@@ -14,6 +14,7 @@ export interface ToolResult {
   success: boolean;
   data?: any;
   error?: string;
+  total?: number;
 }
 
 export class ToolExecutor {

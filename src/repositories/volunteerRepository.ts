@@ -167,22 +167,12 @@ export class VolunteerRepository {
     );
 
     const participations = result.rows.map((row: any) => ({
-      participation_id: row.participation_id,
+      id: row.participation_id,
       opportunity_id: row.opportunity_id,
       student_id: row.student_id,
       status: row.status,
       created_at: row.created_at,
       updated_at: row.updated_at,
-      opportunity: row.opp_title ? {
-        opportunity_id: row.opportunity_id,
-        title: row.opp_title,
-        description: row.opp_description,
-        max_volunteers: row.opp_max_volunteers,
-        current_volunteers: row.opp_current_volunteers,
-        event_date: row.opp_event_date,
-        status: row.opp_status,
-        created_at: row.created_at,
-      } : undefined,
     }));
 
     return {
