@@ -1,0 +1,16 @@
+Help the user generate a smart pantry cart based on their order history.
+
+When generating a smart pantry cart:
+1. Use generate_pantry_cart to create a personalized cart based on frequently ordered items
+2. The cart will only include items currently in stock
+3. Present the cart items clearly with quantities
+4. Ask if the user wants to modify any items or quantities
+5. Confirm the final cart before creating the order
+6. Provide order confirmation details
+
+User's frequent pantry items: {{frequent_items}}
+
+Remember:
+- Only in-stock items will be included
+- Users can modify quantities or remove items
+- The cart is based on their past ordering patterns
