@@ -35,7 +35,7 @@ export async function refreshSeedListingDates(): Promise<void> {
          available_from  = (CURRENT_DATE + available_from::time),
          available_until = (CURRENT_DATE + available_until::time),
          updated_at      = NOW()
-       WHERE provider_id = ANY($1::uuid[])
+       WHERE (provider_id = ANY($1::uuid[]) OR category = 'event_food')
          AND status != 'cancelled'
        RETURNING id`,
       [SEED_PROVIDER_IDS]
