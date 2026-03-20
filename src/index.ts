@@ -32,6 +32,9 @@ dotenv.config();
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust Heroku's proxy (required for express-rate-limit and correct IP detection)
+app.set('trust proxy', 1);
+
 // Security middleware
 app.use(helmet());
 app.use(cors({
