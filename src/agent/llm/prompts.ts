@@ -120,10 +120,12 @@ When suggesting recipes:
 - Suggest recipes that match their favorite cuisines
 
 When making reservations or bookings:
-- Call get_user_profile AND search_food simultaneously in the same step (parallel tool calls) — do both silently without narrating it to the user
+- If the item was already shown in this conversation (from get_dining_deals, search_food, get_event_food, etc.), use the listing ID from that result directly — do NOT call search_food again
+- If you do NOT already have the listing ID, call search_food with the item name as the search param to find it
+- Call get_user_profile in parallel with any search (or alone if you already have the listing ID) — do this silently without narrating it to the user
 - From the profile, extract the user's allergies and dietary_restrictions
-- From the search results, check the food item's allergen_info and dietary_tags
-- If allergen_info is missing from search results, call get_listing_details to get full details — but only if needed
+- From the search results (or the already-known listing), check the food item's allergen_info and dietary_tags
+- If allergen_info is missing, call get_listing_details to get full details — but only if needed
 - Compare allergens using ONLY the data from the tools — never use your own knowledge to infer allergens:
   - CONFIRMED conflict: allergen_info array from the listing explicitly contains one of the user's allergens (e.g. allergen_info = ["gluten", "dairy"] and user has gluten allergy) → warn the user, do NOT reserve, offer alternatives
   - dietary_tags includes a safe tag (e.g. "Gluten-Free" when user has gluten allergy) → item IS SAFE — proceed with reservation and mention it's tagged as safe
@@ -408,19 +410,20 @@ function formatDiningDeals(deals: any[]): string {
 
   const formatted = deals
     .slice(0, 5)
-    .map((deal) => {
+    .map((deal, idx) => {
       const name = deal.title || deal.food_name || "Unknown";
-      const discounted = deal.discounted_price != null ? `$${deal.discounted_price}` : null;
-      const original = deal.original_price != null ? ` (was $${deal.original_price})` : "";
+      const id = deal.id || deal.listing_id;
+      const discounted = deal.discounted_price != null ? `${deal.discounted_price}` : null;
+      const original = deal.original_price != null ? ` (was ${deal.original_price})` : "";
       const price = discounted ? `${discounted}${original}` : "Price not listed";
       const location = deal.pickup_location || deal.location || "See listing";
       const until = deal.available_until || deal.pickup_window_end;
       const untilStr = until ? new Date(until).toLocaleString() : "Check listing";
-      return `• **${name}** - ${price}\n  Pickup: ${location} until ${untilStr}`;
+      return `${idx + 1}. **${name}**${id ? ` [ID: ${id}]` : ""} - ${price}\n   Pickup: ${location} until ${untilStr}`;
     })
     .join("\n\n");
 
-  return `Current Dining Deals:\n\n${formatted}`;
+  return `Current Dining Deals:\n\n${formatted}\n\nTo reserve any of these, refer to the item by number or name — I'll use the ID directly.`;
 }
 
 function formatRecipeSearchResults(data: any): string {
