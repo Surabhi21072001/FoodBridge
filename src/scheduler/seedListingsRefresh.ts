@@ -16,9 +16,14 @@
 
 import { query } from '../config/database';
 
+// Support overriding via env var for different environments (e.g. Heroku vs local)
+const extraIds = process.env.SEED_PROVIDER_IDS
+  ? process.env.SEED_PROVIDER_IDS.split(',').map(id => id.trim())
+  : ['b6c1b408-47ed-47e8-b146-42be74bcbc6c'];  // local dininghall@university.edu
+
 const SEED_PROVIDER_IDS = [
   '66666666-6666-6666-6666-666666666666',  // seedListings.ts
-  'b6c1b408-47ed-47e8-b146-42be74bcbc6c',  // dininghall@university.edu
+  ...extraIds,
 ];
 
 export async function refreshSeedListingDates(): Promise<void> {
