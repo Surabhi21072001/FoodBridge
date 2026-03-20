@@ -408,11 +408,16 @@ function formatDiningDeals(deals: any[]): string {
 
   const formatted = deals
     .slice(0, 5)
-    .map(
-      (deal) =>
-        `• **${deal.title}** - $${deal.discounted_price} (was $${deal.original_price})
-  Pickup: ${deal.pickup_location} until ${new Date(deal.available_until).toLocaleString()}`
-    )
+    .map((deal) => {
+      const name = deal.title || deal.food_name || "Unknown";
+      const discounted = deal.discounted_price != null ? `$${deal.discounted_price}` : null;
+      const original = deal.original_price != null ? ` (was $${deal.original_price})` : "";
+      const price = discounted ? `${discounted}${original}` : "Price not listed";
+      const location = deal.pickup_location || deal.location || "See listing";
+      const until = deal.available_until || deal.pickup_window_end;
+      const untilStr = until ? new Date(until).toLocaleString() : "Check listing";
+      return `• **${name}** - ${price}\n  Pickup: ${location} until ${untilStr}`;
+    })
     .join("\n\n");
 
   return `Current Dining Deals:\n\n${formatted}`;
