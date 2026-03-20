@@ -8,7 +8,8 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "jest --coverage",
-    "seed": "node -e \"require('./dist/seeds/seedDiningHall.js').seedDiningHall().then(() => process.exit(0)).catch(() => process.exit(1))\""
+    "seed": "node -e \"require('./dist/seeds/seedDiningHall.js').seedDiningHall().then(() => process.exit(0)).catch(() => process.exit(1))\"",
+    "seed:students": "node -e \"require('./dist/seeds/seedStudents.js').seedStudents().then(() => process.exit(0)).catch(() => process.exit(1))\""
   },
   "jest": {
     "preset": "ts-jest",
