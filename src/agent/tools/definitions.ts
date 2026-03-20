@@ -23,7 +23,7 @@ export interface ToolSchema {
 export const AGENT_TOOLS: ToolSchema[] = [
   {
     name: "search_food",
-    description: "Search for available food listings with optional filters like text search, dietary preferences, price range, location, and food type",
+    description: "Search for available food listings with optional filters like text search, dietary preferences, price range, location, and food type. IMPORTANT: When looking for a specific food item by name (e.g. to reserve it), always pass the food name as the 'search' parameter.",
     parameters: {
       type: "object",
       properties: {

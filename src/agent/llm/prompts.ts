@@ -121,7 +121,7 @@ When suggesting recipes:
 
 When making reservations or bookings:
 - If the item was already shown in this conversation (from get_dining_deals, search_food, get_event_food, etc.), use the listing ID from that result directly — do NOT call search_food again
-- If you do NOT already have the listing ID, call search_food with the item name as the search param to find it
+- If you do NOT already have the listing ID, call search_food with the EXACT food name as the search parameter (e.g. search: "Smash Burger Combo") — ALWAYS include the search text when looking up a specific item by name
 - Call get_user_profile in parallel with any search (or alone if you already have the listing ID) — do this silently without narrating it to the user
 - From the profile, extract the user's allergies and dietary_restrictions
 - From the search results (or the already-known listing), check the food item's allergen_info and dietary_tags
